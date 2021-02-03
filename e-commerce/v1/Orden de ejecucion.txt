@@ -1,0 +1,3 @@
+El orden es: eureka, config, gateway | shop product | customer | api
+
+

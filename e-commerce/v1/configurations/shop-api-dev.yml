@@ -1,0 +1,13 @@
+server:
+  port: 10100
+  servlet:
+    context-path: /shopapi/v1
+    
+spring:
+  application:
+    name: shop-api
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://eureka:8761/eureka

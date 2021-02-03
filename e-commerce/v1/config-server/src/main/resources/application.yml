@@ -1,0 +1,21 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/GloballogicServiceAndIntegration/celula4-odysseus
+          search-paths: /e-commerce/v1/configurations
+          username: jgottling
+          password: 4834a94b8737b9648d299db81463fa6582d86d92
+          skip-ssl-validation: false
+          clone-on-start: true
+          basedir: target/configs
+          force-pull: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka        

@@ -1,0 +1,1 @@
+package ar.com.gl.shop.product.model;

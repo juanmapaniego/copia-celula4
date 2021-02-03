@@ -1,0 +1,9 @@
+server:
+  port: 10300
+  servlet:
+    context-path: /shopapi/v1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka

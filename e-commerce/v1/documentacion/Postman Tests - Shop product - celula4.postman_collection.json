@@ -1,0 +1,1053 @@
+{
+	"info": {
+		"_postman_id": "da835ce2-9a3a-4c38-be7e-36697269ae9e",
+		"name": "Postman Tests - Shop product - celula4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Buscar todos los productos",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "84b0f70c-bb12-4291-a917-1b2048b38b4b",
+								"exec": [
+									"pm.globals.set(\"base_url\", \"localhost:33333/shop-api/shopapi/v1\");\r",
+									"pm.globals.set(\"product_id\", \"\");\r",
+									"pm.globals.set(\"product_name\", \"\");\r",
+									"pm.globals.set(\"product_status_activo\", \"activo\");\r",
+									"pm.globals.set(\"product_status_inactivo\", \"Inactivo\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b86c2c2c-731c-4db6-826b-26b8229de191",
+								"exec": [
+									"pm.test(\"Buscar productos - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear un producto",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4aa2a474-7ac1-4a21-be09-0497054ecff0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "302b6e72-845c-433b-995d-3c9c180bfbd4",
+								"exec": [
+									"pm.test(\"Producto creado correctamente\", function () {\r",
+									"    if(pm.response.to.have.status(201)) {\r",
+									"\r",
+									"    const data = pm.response.json();\r",
+									"    console.log(data.id);\r",
+									"    pm.expect(data.name).to.eql(\"Nokia\");\r",
+									"    pm.globals.set(\"product_id\", data.id);\r",
+									"    pm.globals.set(\"product_name\", data.name);\r",
+									"    \r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 22,\r\n        \"name\": \"Nokia\",\r\n        \"description\": \"Esto es un producto de Nokia\",\r\n        \"price\": 300000,\r\n        \"active\": true,\r\n        \"createdAt\": null,\r\n        \"modifiedAt\": null,\r\n        \"stock\": {\r\n            \"id\": 1,\r\n            \"quantity\": 200,\r\n            \"locationCode\": \"1923\",\r\n            \"active\": false\r\n        },\r\n        \"category\": {\r\n            \"id\": 1,\r\n            \"name\": \"Celulares\",\r\n            \"description\": \"Telefonia\",\r\n            \"active\": false\r\n        }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar producto por Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "03f6eb0e-e479-49e5-bfa1-4cdd8e8b5628",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "081e7b96-00ca-4325-a6cf-49b1962c947a",
+								"exec": [
+									"pm.test(\"Producto encontrado por id\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data.name).to.eql(pm.globals.get(\"product_name\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar producto por nombre",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "44744578-b8a5-45b8-a016-f7aab4ea33e9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b2f439da-f358-4f7e-afdb-dfcefe7959df",
+								"exec": [
+									"pm.test(\"Producto encontrado por nombre\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data[0].name).to.eql(pm.globals.get(\"product_name\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products?name={{product_name}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{product_name}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrado lógico de un producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "96277027-73bf-4f05-b8e1-e484b6e5fc92",
+								"exec": [
+									"pm.test(\"Respuesta borrado lógico - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar borrador lógico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "073f82b8-1ae4-4b86-92cb-2d3800071830",
+								"exec": [
+									"pm.test(\"Verificar borrado lógico - OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"//    const data = pm.response.json();\r",
+									"\r",
+									"  //  pm.expect(data).to.eql(null);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar un producto por completo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "60052382-828d-43f8-8b23-079e34968e09",
+								"exec": [
+									"pm.test(\"Respuesta a modificar producto - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const data = pm.response.json();\r",
+									"\r",
+									"    pm.expect(data.name).to.eql(pm.globals.get(\"product_name\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": {{product_id}},\r\n        \"name\": \"Nokia\",\r\n        \"description\": \"Producto de Nokia\",\r\n        \"price\": 500.00,\r\n        \"createdAt\": \"2020-08-26\",\r\n        \"modifiedAt\": \"2020-08-27\",\r\n        \"stock\": {\r\n            \"id\": 1,\r\n            \"quantity\": 200,\r\n            \"locationCode\": \"1923\"\r\n        },\r\n        \"category\": {\r\n            \"id\": 1,\r\n            \"name\": \"Celulares\",\r\n            \"description\": \"Telefonia\"\r\n        }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar la descripcion de un producto",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "11ee524b-de48-4ec8-98b1-6465e83ac502",
+								"exec": [
+									"pm.environment.set(\"new_description\",\"no soy de Nokia\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b0948158-08bd-48d5-9ab7-c8b16692ff7c",
+								"exec": [
+									"pm.test(\"Descripción de producto modificada - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data.description).to.eql(pm.variables.get(\"new_description\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"{{new_description}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Catalog/Category",
+			"item": [
+				{
+					"name": "Buscar todas las categorías",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8f8a4f32-f08f-4e43-92bc-968acc9cc19e",
+								"exec": [
+									"pm.globals.set(\"category_id\", \"99\");\r",
+									"pm.globals.set(\"category_name\", \"test_category\");\r",
+									"pm.globals.set(\"category_description\", \"testing category\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/catalogs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"catalogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createCategory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "997a2174-183b-4749-804b-f7caaddf4d71",
+								"exec": [
+									"pm.test(\"Categoría creada correctamente\", function () {\r",
+									"    if(pm.response.to.have.status(201)) {\r",
+									"\r",
+									"    const data = pm.response.json();\r",
+									"    console.log(data.id);\r",
+									"    pm.expect(data.name).to.eql(pm.globals.get(\"category_name\"));\r",
+									"    pm.globals.set(\"category_id\", data.id);\r",
+									"    pm.globals.set(\"category_name\", data.name);\r",
+									"    \r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"id\":\"{{category_id}}\",\r\n\"name\":\"{{category_name}}\",\r\n\"description\":\"{{category_description}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/catalogs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"catalogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar categoría por ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "75b13aab-6e6c-43aa-89d0-d57ed1c84363",
+								"exec": [
+									"pm.test(\"Categoría encontrada por id\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data.name).to.eql(pm.globals.get(\"category_name\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/catalogs/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"catalogs",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar categoría por nombre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "acef0868-2ac6-4dba-851a-db4c0d118fae",
+								"exec": [
+									"pm.test(\"Categoría encontrada por nombre\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data[0].name).to.eql(pm.globals.get(\"category_name\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/catalogs?name={{category_name}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"catalogs"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{category_name}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patchear una categoría",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "77db0f80-807d-4b54-bdaa-ec14358b81af",
+								"exec": [
+									"pm.environment.set(\"new_description\",\"i'm a testing category\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "981d76d7-5631-41df-93a1-9105fbdc9c62",
+								"exec": [
+									"pm.test(\"Descripción de categoría modificada - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data.description).to.eql(pm.variables.get(\"new_description\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n\"description\":\"{{new_description}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/catalogs/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"catalogs",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar categoría",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f50c0ff7-cb57-4e50-ad54-c7ef3014f1ec",
+								"exec": [
+									"pm.test(\"Respuesta de borrado - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/catalogs/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"catalogs",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar borrado de categoría",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "599cd987-45d2-4cd6-a778-a761503319c5",
+								"exec": [
+									"pm.test(\"Categoría borrada - OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/catalogs/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"catalogs",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Buscar todos los consumidores",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b0cb50b0-f819-4fb9-8521-b9c842b50542",
+								"exec": [
+									"pm.globals.set(\"base_url\", \"localhost:33333/shop-api/shopapi/v1\");\r",
+									"pm.globals.set(\"customer_id\", \"99\");\r",
+									"pm.globals.set(\"customer_first_name\", \"test_customer\");\r",
+									"pm.globals.set(\"customer_second_name\", \"test_customer_second\");\r",
+									"pm.globals.set(\"customer_last_name\", \"test_customer\");\r",
+									"pm.globals.set(\"customer_email\", \"testin@customer.com\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3886e3b5-6b1b-4b46-956f-abe754316a5d",
+								"exec": [
+									"pm.test(\"Lista completa de consumidores\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/customers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createCustomers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "41e5d3ff-ab78-43a4-9202-2752c48bf6e0",
+								"exec": [
+									"pm.test(\"Consumidor creado correctamente\", function () {\r",
+									"    if(pm.response.to.have.status(201)) {\r",
+									"\r",
+									"    const data = pm.response.json();\r",
+									"    console.log(data.id);\r",
+									"    pm.expect(data.firstName).to.eql(pm.globals.get(\"customer_first_name\"));\r",
+									"    pm.globals.set(\"customer_id\", data.id);\r",
+									"    \r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"id\":\"{{customer_id}}\",\r\n\"firstName\":\"{{customer_first_name}}\",\r\n\"lastName\" :\"{{customer_last_name}}\", \r\n\"email\":\"{{customer_email}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/customers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar consumidor por ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a6b49b4-fb46-4c4d-98b3-56328d44dc7f",
+								"exec": [
+									"pm.test(\"Consumidor encontrado por id\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data.firstName).to.eql(pm.globals.get(\"customer_first_name\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/customers/{{customer_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"customers",
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar consumidor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ffb99441-8810-42bf-86d0-e780183ab1e7",
+								"exec": [
+									"pm.test(\"Consumidor actualizado\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data.firstName).to.eql(pm.globals.get(\"customer_second_name\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"id\":\"{{customer_id}}\",\r\n\"firstName\":\"{{customer_second_name}}\",\r\n\"lastName\" :\"{{customer_last_name}}\", \r\n\"email\":\"{{customer_email}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/customers/{{customer_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"customers",
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar consumidor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "442ae768-301f-4152-935b-d4c105bd8411",
+								"exec": [
+									"pm.test(\"Respuesta de borrado - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/customers/{{customer_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"customers",
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar borrado de consumidor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6b1f2f50-4dd5-4e6e-a175-c44ed3637f40",
+								"exec": [
+									"pm.test(\"Categoría borrada - OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/customers/{{costumer_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"customers",
+								"{{costumer_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

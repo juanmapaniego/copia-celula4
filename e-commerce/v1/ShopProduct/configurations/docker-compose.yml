@@ -1,0 +1,16 @@
+version: '3'
+services:
+  shop-product:
+    container_name: shop-product
+    environment:
+      - MSG_DOCKER=Compose
+    build: ./shop-product/.
+    networks:
+      - net-bootcamp
+    expose:
+      - 8081
+    ports:
+      - 80
+networks:
+    net-bootcamp:
+        driver: bridge

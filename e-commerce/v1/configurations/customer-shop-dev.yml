@@ -1,0 +1,23 @@
+server:
+  port: 40000
+  servlet:
+    context-path: /customershop/v1
+
+spring:
+  application:
+    name: customer-shop
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: Celula04!!!
+    url: jdbc:mysql://bootcamp.ckyzngvmlkpk.sa-east-1.rds.amazonaws.com:3306/celula4
+    username: celula4
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        
+eureka:
+  client:
+    service-url:
+      default-zone: http://eureka:8761/eureka    

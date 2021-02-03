@@ -1,0 +1,79 @@
+version: '3.8'
+services:
+  eureka:
+    container_name: eureka
+    build:
+      context: EurekaServer/
+      dockerfile: Dockerfile
+    image: eureka
+    networks:
+      - net-bootcamp
+    ports:
+      - "8761:8761"  
+  config-server:
+    container_name: config-server
+    build:
+      context: ./config-server/
+      dockerfile: Dockerfile
+    image: config-server
+    networks:
+      - net-bootcamp
+    ports: 
+      - "8888:8888"
+    depends_on:
+      - eureka
+  gateway:
+    container_name: gateway
+    build:
+      context: ./ZullGateway/
+      dockerfile: Dockerfile
+    image: gateway
+    networks:
+      - net-bootcamp
+    ports: 
+      - "33333:33333"
+    depends_on:
+      - config-server
+  shop-product:
+    container_name: shop-product
+    build:
+      context: ./ShopProduct/
+      dockerfile: Dockerfile
+    image: shop-product
+    networks:
+      - net-bootcamp
+    ports: 
+      - "9099:9099"
+      - "9999:9999"
+    depends_on:
+      - config-server
+  customer:
+    container_name: customer
+    build:
+      context: ./Customer-Shop/
+      dockerfile: Dockerfile
+    image: customer
+    networks:
+      - net-bootcamp
+    ports: 
+      - "40000:40000"
+      - "9089:9089"
+    depends_on:
+      - config-server
+  api:
+    container_name: api
+    build:
+      context: ./shop-api/
+      dockerfile: Dockerfile
+    image: api
+    networks:
+      - net-bootcamp
+    ports: 
+      - "10300:10300"
+      - "10100:10100"
+    depends_on:
+      - config-server
+      - gateway
+networks:
+  net-bootcamp:
+    driver: bridge

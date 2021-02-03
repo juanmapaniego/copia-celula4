@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: shop-product
+  cloud:
+    config:
+      uri: http://config-server:8888
+      label: feature/testIntegrador
+  profiles:
+    active: dev
